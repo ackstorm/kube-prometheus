@@ -11,14 +11,14 @@ metadata:
   namespace: monitoring
 spec:
   additionalAlertManagerConfigs:
-    key: prometheus-additional-alertmanager-config-secret.yaml
-    name: prometheus-additional-alertmanager-config
+    key: additional-alertmanager-config-secret.yaml
+    name: additional-alertmanager-config
   additionalAlertRelabelConfigs:
-    key: prometheus-additional-relabel-configs-secret.yaml
-    name: prometheus-additional-relabel-configs
+    key: additional-relabel-configs-secret.yaml
+    name: additional-relabel-configs
   additionalScrapeConfigs:
-    key: prometheus-additional-scrape-configs-secret.yaml
-    name: prometheus-additional-scrape-configs
+    key: additional-scrape-configs-secret.yaml
+    name: additional-scrape-configs
   affinity:
     podAntiAffinity:
       preferredDuringSchedulingIgnoredDuringExecution:
