@@ -5,6 +5,7 @@ resources:
 - alertmanager-networkPolicy.yaml
 - alertmanager-podDisruptionBudget.yaml
 - alertmanager-prometheusRule.yaml
+- alertmanager-secret.yaml
 - alertmanager-service.yaml
 - alertmanager-serviceAccount.yaml
 - alertmanager-serviceMonitor.yaml

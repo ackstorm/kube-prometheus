@@ -24,7 +24,6 @@ spec:
           - monitoring
           topologyKey: kubernetes.io/hostname
         weight: 100
-  configSecret: alertmanager-role-config
   externalUrl: https://${CLUSTER_INFO_MONITORING_URL}/alertmanager
   image: quay.io/prometheus/alertmanager:v0.25.0
   nodeSelector:

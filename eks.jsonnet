@@ -95,7 +95,7 @@ local kp =
           containers+: [{
               name: 'prometheus',
               startupProbe+: {
-                failureThreshold: 120
+                failureThreshold: 120 # Extend recovery time for WAL
               }
           }]
         }
