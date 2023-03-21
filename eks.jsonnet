@@ -55,16 +55,16 @@ local kp =
           retention: "12h",
           externalUrl: "https://${CLUSTER_INFO_MONITORING_URL}/prometheus",
           additionalScrapeConfigs: {
-            name: "prometheus-additional-scrape-configs",
-            key: "prometheus-additional-scrape-configs-secret.yaml",
+            name: "additional-scrape-configs",
+            key: "additional-scrape-configs-secret.yaml",
           },
           additionalAlertRelabelConfigs: {
-            name: "prometheus-additional-relabel-configs",
-            key: "prometheus-additional-relabel-configs-secret.yaml",
+            name: "additional-relabel-configs",
+            key: "additional-relabel-configs-secret.yaml",
           },
           additionalAlertManagerConfigs: {
-            name: "prometheus-additional-alertmanager-config",
-            key: "prometheus-additional-alertmanager-config-secret.yaml",
+            name: "additional-alertmanager-config",
+            key: "additional-alertmanager-config-secret.yaml",
           },
           externalLabels: {
             cluster: "${CLUSTER_INFO_PLATFORM_NAME}-${CLUSTER_INFO_ENVIRONMENT}",
