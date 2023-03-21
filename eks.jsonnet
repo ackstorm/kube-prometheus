@@ -38,10 +38,10 @@ local kp =
       }
     },
     alertmanager+: {
+      secret: {}, # Do not generate alertmanager config
       alertmanager+: {
         spec+: {
           replicas: 1,
-          configSecret: "alertmanager-role-config",
           secrets: ["monitoring-basic-auth"],
           externalUrl: "https://${CLUSTER_INFO_MONITORING_URL}/alertmanager",
         }
