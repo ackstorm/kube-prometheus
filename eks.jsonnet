@@ -38,7 +38,6 @@ local kp =
       }
     },
     alertmanager+: {
-      secret: {}, # Do not generate alertmanager config
       alertmanager+: {
         spec+: {
           replicas: 1,
