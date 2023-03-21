@@ -38,6 +38,7 @@ local kp =
       }
     },
     alertmanager+: {
+      secret: {}, # Do not generate alertmanager config
       alertmanager+: {
         spec+: {
           replicas: 1,
@@ -49,7 +50,6 @@ local kp =
     prometheus+: {
       prometheus+: {
         spec+: {
-          alerting: {},
           enableAdminAPI: false,
           retention: "12h",
           externalUrl: "https://${CLUSTER_INFO_MONITORING_URL}/prometheus",
