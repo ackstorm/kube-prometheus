@@ -33,7 +33,12 @@ spec:
           - monitoring
           topologyKey: kubernetes.io/hostname
         weight: 100
-  alerting: {}
+  alerting:
+    alertmanagers:
+    - apiVersion: v2
+      name: alertmanager-main
+      namespace: monitoring
+      port: web
   containers:
   - name: prometheus
     startupProbe:

@@ -50,7 +50,6 @@ local kp =
     prometheus+: {
       prometheus+: {
         spec+: {
-          alerting: {},
           enableAdminAPI: false,
           retention: "12h",
           externalUrl: "https://${CLUSTER_INFO_MONITORING_URL}/prometheus",
