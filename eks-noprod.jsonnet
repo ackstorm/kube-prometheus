@@ -3,7 +3,8 @@ local kp =
   (import 'kube-prometheus/addons/all-namespaces.libsonnet') + 
   (import 'kube-prometheus/addons/anti-affinity.libsonnet') +
   (import 'kube-prometheus/addons/managed-cluster.libsonnet') +
-  (import 'kube-prometheus/addons/pyrra.libsonnet') +
+  (import 'kube-prometheus/addons/strip-limits.libsonnet') +
+  // (import 'kube-prometheus/addons/pyrra.libsonnet') +
   {
     values+:: {
       common+: {
@@ -11,11 +12,33 @@ local kp =
         platform: 'eks'
       },
       prometheus+: {
+        resources: {},
         namespaces: [],
         replicas: 2,
         enableFeatures: ["memory-snapshot-on-shutdown"],
         thanos: true,
-        retention: "12h",
+        retention: "6h",
+      },
+      alertmanager+: {
+        resources: {},
+      },
+      blackboxExporter+: {
+        resources: {},
+      },
+      grafana+: {
+        resources: {},
+      },
+      kubeStateMetrics+: {
+        resources: {},
+      },
+      nodeExporter+: {
+        resources: {},
+      },
+      prometheusAdapter+: {
+        resources: {},
+      },
+      prometheusOperator+: {
+        resources: {},
       },
     },
     kubeStateMetrics+: {
@@ -69,21 +92,6 @@ local kp =
             cluster: "${CLUSTER_INFO_PLATFORM_NAME}-${CLUSTER_INFO_ENVIRONMENT}",
             env: "${CLUSTER_INFO_ENVIRONMENT}",
           },
-          storage: {
-            volumeClaimTemplate: {
-              apiVersion: 'v1',
-              kind: 'PersistentVolumeClaim',
-              spec: {
-                accessModes: ['ReadWriteOnce'],
-                resources: { 
-                  requests: { 
-                    storage: '20Gi' 
-                  }
-                },
-                // storageClassName: 'ssd',
-              }
-            }
-          },
           thanos: {
             version: "v0.30.2",
             objectStorageConfig: {
@@ -107,14 +115,14 @@ local kp =
   ['setup/prometheus-operator-' + name]: kp.prometheusOperator[name]
   for name in std.filter((function(name) name != 'serviceMonitor' && name != 'prometheusRule'), std.objectFields(kp.prometheusOperator))
 } +
-{ 'setup/pyrra-slo-CustomResourceDefinition': kp.pyrra.crd } +
+// { 'setup/pyrra-slo-CustomResourceDefinition': kp.pyrra.crd } +
 // serviceMonitor and prometheusRule are separated so that they can be created after the CRDs are ready
 { 'prometheus-operator-serviceMonitor': kp.prometheusOperator.serviceMonitor } +
 { 'prometheus-operator-prometheusRule': kp.prometheusOperator.prometheusRule } +
 { 'kube-prometheus-prometheusRule': kp.kubePrometheus.prometheusRule } +
 { ['alertmanager-' + name]: kp.alertmanager[name] for name in std.objectFields(kp.alertmanager) } +
 { ['blackbox-exporter-' + name]: kp.blackboxExporter[name] for name in std.objectFields(kp.blackboxExporter) } +
-{ ['pyrra-' + name]: kp.pyrra[name] for name in std.objectFields(kp.pyrra) if name != 'crd' } +
+// { ['pyrra-' + name]: kp.pyrra[name] for name in std.objectFields(kp.pyrra) if name != 'crd' } +
 { ['kube-state-metrics-' + name]: kp.kubeStateMetrics[name] for name in std.objectFields(kp.kubeStateMetrics) } +
 { ['kubernetes-' + name]: kp.kubernetesControlPlane[name] for name in std.objectFields(kp.kubernetesControlPlane) }
 { ['node-exporter-' + name]: kp.nodeExporter[name] for name in std.objectFields(kp.nodeExporter) } +
