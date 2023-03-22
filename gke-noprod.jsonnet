@@ -3,8 +3,6 @@ local kp =
   (import 'kube-prometheus/addons/all-namespaces.libsonnet') + 
   (import 'kube-prometheus/addons/anti-affinity.libsonnet') +
   (import 'kube-prometheus/addons/managed-cluster.libsonnet') +
-  (import 'kube-prometheus/addons/strip-limits.libsonnet') +
-  // (import 'kube-prometheus/addons/pyrra.libsonnet') +
   {
     values+:: {
       common+: {
@@ -14,7 +12,7 @@ local kp =
       prometheus+: {
         resources: {},
         namespaces: [],
-        replicas: 2,
+        replicas: 1,
         enableFeatures: ["memory-snapshot-on-shutdown"],
         thanos: true,
         retention: "6h",
@@ -62,6 +60,7 @@ local kp =
     },
     alertmanager+: {
       secret: {}, # Do not generate alertmanager config
+      podDisruptionBudget: {}, # Reduce replicas to 1 and disable PDB
       alertmanager+: {
         spec+: {
           replicas: 1,
@@ -71,6 +70,7 @@ local kp =
       }
     },
     prometheus+: {
+      podDisruptionBudget: {}, # Reduce replicas to 1 and disable PDB
       prometheus+: {
         spec+: {
           enableAdminAPI: false,
@@ -115,16 +115,12 @@ local kp =
   ['setup/prometheus-operator-' + name]: kp.prometheusOperator[name]
   for name in std.filter((function(name) name != 'serviceMonitor' && name != 'prometheusRule'), std.objectFields(kp.prometheusOperator))
 } +
-// { 'setup/pyrra-slo-CustomResourceDefinition': kp.pyrra.crd } +
-// serviceMonitor and prometheusRule are separated so that they can be created after the CRDs are ready
 { 'prometheus-operator-serviceMonitor': kp.prometheusOperator.serviceMonitor } +
 { 'prometheus-operator-prometheusRule': kp.prometheusOperator.prometheusRule } +
 { 'kube-prometheus-prometheusRule': kp.kubePrometheus.prometheusRule } +
 { ['alertmanager-' + name]: kp.alertmanager[name] for name in std.objectFields(kp.alertmanager) } +
 { ['blackbox-exporter-' + name]: kp.blackboxExporter[name] for name in std.objectFields(kp.blackboxExporter) } +
-// { ['pyrra-' + name]: kp.pyrra[name] for name in std.objectFields(kp.pyrra) if name != 'crd' } +
 { ['kube-state-metrics-' + name]: kp.kubeStateMetrics[name] for name in std.objectFields(kp.kubeStateMetrics) } +
 { ['kubernetes-' + name]: kp.kubernetesControlPlane[name] for name in std.objectFields(kp.kubernetesControlPlane) }
 { ['node-exporter-' + name]: kp.nodeExporter[name] for name in std.objectFields(kp.nodeExporter) } +
-{ ['prometheus-' + name]: kp.prometheus[name] for name in std.objectFields(kp.prometheus) } // +
-//{ ['prometheus-adapter-' + name]: kp.prometheusAdapter[name] for name in std.objectFields(kp.prometheusAdapter) }
+{ ['prometheus-' + name]: kp.prometheus[name] for name in std.objectFields(kp.prometheus) }

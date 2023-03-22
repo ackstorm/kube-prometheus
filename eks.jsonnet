@@ -1,3 +1,30 @@
+local update = {
+  kubernetesControlPlane+: {
+    prometheusRule+: {
+      spec+: {
+        groups: std.map(
+          function(group)
+            if group.name == 'kubernetes-apps' then
+              group {
+                rules: std.map(
+                  function(rule)
+                    if rule.alert == 'KubePodCrashLooping' then
+                      rule {
+                        expr: 'rate(kube_pod_container_status_restarts_total{namespace=kube-system,job="kube-state-metrics"}[10m]) * 60 * 5 > 0',
+                      }
+                    else
+                      rule,
+                  group.rules
+                ),
+              }
+            else
+              group,
+          super.groups
+        ),
+      },
+    },
+  },
+};
 local kp =
   (import 'kube-prometheus/main.libsonnet') +
   (import 'kube-prometheus/addons/all-namespaces.libsonnet') + 
@@ -21,6 +48,7 @@ local kp =
     kubeStateMetrics+: {
       deployment+: {
         spec+: {
+          replicas: 2,
           template+: {
             spec+: {
               containers: [
@@ -39,6 +67,7 @@ local kp =
     },
     alertmanager+: {
       secret: {}, # Do not generate alertmanager config
+      podDisruptionBudget: {}, # Reduce replicas to 1 and disable PDB
       alertmanager+: {
         spec+: {
           replicas: 1,
@@ -108,7 +137,6 @@ local kp =
   for name in std.filter((function(name) name != 'serviceMonitor' && name != 'prometheusRule'), std.objectFields(kp.prometheusOperator))
 } +
 { 'setup/pyrra-slo-CustomResourceDefinition': kp.pyrra.crd } +
-// serviceMonitor and prometheusRule are separated so that they can be created after the CRDs are ready
 { 'prometheus-operator-serviceMonitor': kp.prometheusOperator.serviceMonitor } +
 { 'prometheus-operator-prometheusRule': kp.prometheusOperator.prometheusRule } +
 { 'kube-prometheus-prometheusRule': kp.kubePrometheus.prometheusRule } +
@@ -118,5 +146,4 @@ local kp =
 { ['kube-state-metrics-' + name]: kp.kubeStateMetrics[name] for name in std.objectFields(kp.kubeStateMetrics) } +
 { ['kubernetes-' + name]: kp.kubernetesControlPlane[name] for name in std.objectFields(kp.kubernetesControlPlane) }
 { ['node-exporter-' + name]: kp.nodeExporter[name] for name in std.objectFields(kp.nodeExporter) } +
-{ ['prometheus-' + name]: kp.prometheus[name] for name in std.objectFields(kp.prometheus) } // +
-//{ ['prometheus-adapter-' + name]: kp.prometheusAdapter[name] for name in std.objectFields(kp.prometheusAdapter) }
+{ ['prometheus-' + name]: kp.prometheus[name] for name in std.objectFields(kp.prometheus) }

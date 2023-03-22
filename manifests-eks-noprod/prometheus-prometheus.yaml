@@ -64,7 +64,7 @@ spec:
   podMonitorSelector: {}
   probeNamespaceSelector: {}
   probeSelector: {}
-  replicas: 2
+  replicas: 1
   resources: {}
   retention: 12h
   ruleNamespaceSelector: {}
