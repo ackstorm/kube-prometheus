@@ -39,6 +39,7 @@ local kp =
     },
     alertmanager+: {
       secret: {}, # Do not generate alertmanager config
+      podDisruptionBudget: {}, # Reduce replicas to 1 and disable PDB
       alertmanager+: {
         spec+: {
           replicas: 1,

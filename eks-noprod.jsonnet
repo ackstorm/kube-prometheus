@@ -13,7 +13,7 @@ local kp =
       prometheus+: {
         resources: {},
         namespaces: [],
-        replicas: 2,
+        replicas: 1,
         enableFeatures: ["memory-snapshot-on-shutdown"],
         thanos: true,
         retention: "6h",
@@ -61,6 +61,7 @@ local kp =
     },
     alertmanager+: {
       secret: {}, # Do not generate alertmanager config
+      podDisruptionBudget: {}, # Reduce replicas to 1 and disable PDB
       alertmanager+: {
         spec+: {
           replicas: 1,
@@ -70,6 +71,7 @@ local kp =
       }
     },
     prometheus+: {
+      podDisruptionBudget: {}, # Reduce replicas to 1 and disable PDB
       prometheus+: {
         spec+: {
           enableAdminAPI: false,
