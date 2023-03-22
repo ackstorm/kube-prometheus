@@ -1,4 +1,13 @@
-# Customizing Kube-Prometheus
+# Kube-Prometheus customized
+
+## Generated manifests
+
+### manifest-eks
+
+For AWS EKS 
+
+- manifest-eks-noprod
+
 
 ## Installing
 

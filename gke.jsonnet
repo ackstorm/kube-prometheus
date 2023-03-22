@@ -21,6 +21,7 @@ local kp =
     kubeStateMetrics+: {
       deployment+: {
         spec+: {
+          replicas: 2,
           template+: {
             spec+: {
               containers: [
