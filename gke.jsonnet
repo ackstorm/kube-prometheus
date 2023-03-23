@@ -19,6 +19,23 @@ local kp =
       },
     },
     kubeStateMetrics+: {
+      serviceMonitor+: {
+        spec+: {
+          endpoints: [
+            if x.port == "https-main"
+            then x { metricRelabelings+: [{
+              action: "replace",
+              regex: "(.+)",
+              replacement: "kube-state-metrics", # Avoid duplicate metrics with multiple replicas
+              sourceLabels: ["__name__"],
+              targetLabel: "instance"
+            }] 
+            }
+            else x
+            for x in super.endpoints
+          ]
+        }
+      },
       deployment+: {
         spec+: {
           replicas: 2,

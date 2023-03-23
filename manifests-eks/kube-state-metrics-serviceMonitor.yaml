@@ -18,6 +18,12 @@ spec:
       regex: kube_endpoint_address_not_ready|kube_endpoint_address_available
       sourceLabels:
       - __name__
+    - action: replace
+      regex: (.+)
+      replacement: kube-state-metrics
+      sourceLabels:
+      - __name__
+      targetLabel: instance
     port: https-main
     relabelings:
     - action: labeldrop
