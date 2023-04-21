@@ -15,7 +15,7 @@ local kp =
         resources: {},
         namespaces: [],
         replicas: 1,
-        enableFeatures: ["memory-snapshot-on-shutdown"],
+        enableFeatures: ["memory-snapshot-on-shutdown", "remote-write-receiver"],
         thanos: true,
         retention: "6h",
       },

@@ -46,6 +46,7 @@ spec:
   enableAdminAPI: false
   enableFeatures:
   - memory-snapshot-on-shutdown
+  - remote-write-receiver
   externalLabels:
     cluster: ${CLUSTER_INFO_PLATFORM_NAME}-${CLUSTER_INFO_ENVIRONMENT}
     env: ${CLUSTER_INFO_ENVIRONMENT}

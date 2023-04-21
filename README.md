@@ -8,6 +8,7 @@ For AWS EKS
 
 - manifest-eks-noprod
 
+### manifest-gke
 
 ## Installing
 
@@ -84,4 +85,36 @@ local kp =
 { ['node-exporter-' + name]: kp.nodeExporter[name] for name in std.objectFields(kp.nodeExporter) } +
 { ['prometheus-' + name]: kp.prometheus[name] for name in std.objectFields(kp.prometheus) } +
 { ['prometheus-adapter-' + name]: kp.prometheusAdapter[name] for name in std.objectFields(kp.prometheusAdapter) }
+```
+
+## Patching rules
+
+```
+local update = {
+  kubernetesControlPlane+: {
+    prometheusRule+: {
+      spec+: {
+        groups: std.map(
+          function(group)
+            if group.name == 'kubernetes-apps' then
+              group {
+                rules: std.map(
+                  function(rule)
+                    if rule.alert == 'KubePodCrashLooping' then
+                      rule {
+                        expr: 'rate(kube_pod_container_status_restarts_total{namespace=kube-system,job="kube-state-metrics"}[10m]) * 60 * 5 > 0',
+                      }
+                    else
+                      rule,
+                  group.rules
+                ),
+              }
+            else
+              group,
+          super.groups
+        ),
+      },
+    },
+  },
+};
 ```

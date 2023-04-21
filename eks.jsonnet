@@ -1,30 +1,3 @@
-local update = {
-  kubernetesControlPlane+: {
-    prometheusRule+: {
-      spec+: {
-        groups: std.map(
-          function(group)
-            if group.name == 'kubernetes-apps' then
-              group {
-                rules: std.map(
-                  function(rule)
-                    if rule.alert == 'KubePodCrashLooping' then
-                      rule {
-                        expr: 'rate(kube_pod_container_status_restarts_total{namespace=kube-system,job="kube-state-metrics"}[10m]) * 60 * 5 > 0',
-                      }
-                    else
-                      rule,
-                  group.rules
-                ),
-              }
-            else
-              group,
-          super.groups
-        ),
-      },
-    },
-  },
-};
 local kp =
   (import 'kube-prometheus/main.libsonnet') +
   (import 'kube-prometheus/addons/all-namespaces.libsonnet') + 
@@ -40,7 +13,7 @@ local kp =
       prometheus+: {
         namespaces: [],
         replicas: 2,
-        enableFeatures: ["memory-snapshot-on-shutdown"],
+        enableFeatures: ["memory-snapshot-on-shutdown", "remote-write-receiver"],
         thanos: true,
         retention: "12h",
       },
@@ -50,13 +23,15 @@ local kp =
         spec+: {
           endpoints: [
             if x.port == "https-main"
-            then x { metricRelabelings+: [{
-              action: "replace",
-              regex: "(.+)",
-              replacement: "kube-state-metrics", # Avoid duplicate metrics with multiple replicas
-              sourceLabels: ["__name__"],
-              targetLabel: "instance"
-            }] 
+            then x { metricRelabelings+: [
+              {
+                action: "replace",
+                regex: "(.+)",
+                replacement: "kube-state-metrics", # Avoid duplicate metrics with multiple replicas
+                sourceLabels: ["__name__"],
+                targetLabel: "instance"
+              }
+            ] 
             }
             else x
             for x in super.endpoints
