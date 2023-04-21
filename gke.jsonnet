@@ -13,7 +13,7 @@ local kp =
       prometheus+: {
         namespaces: [],
         replicas: 2,
-        enableFeatures: ["memory-snapshot-on-shutdown"],
+        enableFeatures: ["memory-snapshot-on-shutdown", "remote-write-receiver"],
         thanos: true,
         retention: "12h",
       },
@@ -23,13 +23,15 @@ local kp =
         spec+: {
           endpoints: [
             if x.port == "https-main"
-            then x { metricRelabelings+: [{
-              action: "replace",
-              regex: "(.+)",
-              replacement: "kube-state-metrics", # Avoid duplicate metrics with multiple replicas
-              sourceLabels: ["__name__"],
-              targetLabel: "instance"
-            }] 
+            then x { metricRelabelings+: [
+              {
+                action: "replace",
+                regex: "(.+)",
+                replacement: "kube-state-metrics", # Avoid duplicate metrics with multiple replicas: sum(kube_namespace_labels)
+                sourceLabels: ["__name__"],
+                targetLabel: "instance"
+              }
+            ] 
             }
             else x
             for x in super.endpoints
