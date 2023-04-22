@@ -5,7 +5,7 @@ metadata:
     prometheus: k8s
     role: alert-rules
   name: apiserver-write-response-errors
-  namespace: monitoring
+  namespace: observability
 spec:
   description: ""
   indicator:

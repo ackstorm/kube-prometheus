@@ -7,7 +7,7 @@ metadata:
     prometheus: k8s
     role: alert-rules
   name: kubernetes-monitoring-rules
-  namespace: monitoring
+  namespace: observability
 spec:
   groups:
   - name: kubernetes-apps

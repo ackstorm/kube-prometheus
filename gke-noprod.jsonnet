@@ -6,7 +6,7 @@ local kp =
   {
     values+:: {
       common+: {
-        namespace: 'monitoring',
+        namespace: 'observability',
         platform: 'eks'
       },
       prometheus+: {

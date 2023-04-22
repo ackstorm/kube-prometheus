@@ -4,7 +4,7 @@ metadata:
   labels:
     app.kubernetes.io/name: aws-node
   name: aws-node
-  namespace: monitoring
+  namespace: observability
 spec:
   endpoints:
   - interval: 30s

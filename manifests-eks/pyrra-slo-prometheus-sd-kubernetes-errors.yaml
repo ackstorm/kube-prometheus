@@ -5,7 +5,7 @@ metadata:
     prometheus: k8s
     role: alert-rules
   name: prometheus-sd-kubernetes-errors
-  namespace: monitoring
+  namespace: observability
 spec:
   description: If there are too many errors Prometheus is having a bad time discovering new Kubernetes services.
   indicator:

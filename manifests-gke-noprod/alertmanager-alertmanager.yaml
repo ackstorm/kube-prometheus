@@ -8,7 +8,7 @@ metadata:
     app.kubernetes.io/part-of: kube-prometheus
     app.kubernetes.io/version: 0.25.0
   name: main
-  namespace: monitoring
+  namespace: observability
 spec:
   affinity:
     podAntiAffinity:
@@ -21,7 +21,7 @@ spec:
               app.kubernetes.io/name: alertmanager
               app.kubernetes.io/part-of: kube-prometheus
           namespaces:
-          - monitoring
+          - observability
           topologyKey: kubernetes.io/hostname
         weight: 100
   externalUrl: https://${CLUSTER_INFO_MONITORING_URL}/alertmanager

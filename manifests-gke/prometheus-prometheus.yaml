@@ -8,7 +8,7 @@ metadata:
     app.kubernetes.io/part-of: kube-prometheus
     app.kubernetes.io/version: 2.41.0
   name: k8s
-  namespace: monitoring
+  namespace: observability
 spec:
   additionalAlertManagerConfigs:
     key: additional-alertmanager-config-secret.yaml
@@ -30,14 +30,14 @@ spec:
               app.kubernetes.io/name: prometheus
               app.kubernetes.io/part-of: kube-prometheus
           namespaces:
-          - monitoring
+          - observability
           topologyKey: kubernetes.io/hostname
         weight: 100
   alerting:
     alertmanagers:
     - apiVersion: v2
       name: alertmanager-main
-      namespace: monitoring
+      namespace: observability
       port: web
   containers:
   - name: prometheus

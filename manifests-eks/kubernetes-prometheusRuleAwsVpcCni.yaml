@@ -6,7 +6,7 @@ metadata:
     app.kubernetes.io/name: prometheus-vpc-cni-rules
     app.kubernetes.io/part-of: kube-prometheus
   name: aws-vpc-cni-rules
-  namespace: monitoring
+  namespace: observability
 spec:
   groups:
   - name: aws-vpc-cni.rules

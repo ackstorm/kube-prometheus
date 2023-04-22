@@ -7,7 +7,7 @@ metadata:
     app.kubernetes.io/part-of: kube-prometheus
     app.kubernetes.io/version: 0.5.2
   name: pyrra-kubernetes
-  namespace: monitoring
+  namespace: observability
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: ClusterRole
@@ -15,4 +15,4 @@ roleRef:
 subjects:
 - kind: ServiceAccount
   name: pyrra-kubernetes
-  namespace: monitoring
+  namespace: observability
