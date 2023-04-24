@@ -63,7 +63,7 @@ local kp =
       alertmanager+: {
         spec+: {
           replicas: 1,
-          secrets: ["monitoring-basic-auth"],
+          secrets: ["observability-basic-auth"],
           externalUrl: "https://${CLUSTER_INFO_MONITORING_URL}/alertmanager",
         }
       }

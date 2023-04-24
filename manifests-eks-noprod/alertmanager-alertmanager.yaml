@@ -38,7 +38,7 @@ spec:
   replicas: 1
   resources: {}
   secrets:
-  - monitoring-basic-auth
+  - observability-basic-auth
   securityContext:
     fsGroup: 2000
     runAsNonRoot: true

@@ -44,7 +44,7 @@ spec:
       cpu: 4m
       memory: 100Mi
   secrets:
-  - monitoring-basic-auth
+  - observability-basic-auth
   securityContext:
     fsGroup: 2000
     runAsNonRoot: true
