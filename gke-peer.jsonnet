@@ -70,6 +70,9 @@ local kp =
           },
           remoteWrite: [{
             url: 'http://mimir-nginx.observability.svc/api/v1/push',
+            #headers: {
+            #  "X-Scope-OrgID": "${CLUSTER_INFO_PLATFORM_NAME}-${CLUSTER_INFO_ENVIRONMENT}"
+            #}
           }],
           storage: {
             volumeClaimTemplate: {
