@@ -1,0 +1,78 @@
+apiVersion: monitoring.coreos.com/v1
+kind: Prometheus
+metadata:
+  labels:
+    app.kubernetes.io/component: prometheus
+    app.kubernetes.io/instance: k8s
+    app.kubernetes.io/name: prometheus
+    app.kubernetes.io/part-of: kube-prometheus
+    app.kubernetes.io/version: 2.41.0
+  name: k8s
+  namespace: observability
+spec:
+  affinity:
+    podAntiAffinity:
+      preferredDuringSchedulingIgnoredDuringExecution:
+      - podAffinityTerm:
+          labelSelector:
+            matchLabels:
+              app.kubernetes.io/component: prometheus
+              app.kubernetes.io/instance: k8s
+              app.kubernetes.io/name: prometheus
+              app.kubernetes.io/part-of: kube-prometheus
+          namespaces:
+          - observability
+          topologyKey: kubernetes.io/hostname
+        weight: 100
+  containers:
+  - name: prometheus
+    startupProbe:
+      failureThreshold: 120
+  enableAdminAPI: false
+  enableFeatures:
+  - memory-snapshot-on-shutdown
+  - remote-write-receiver
+  externalLabels:
+    cluster: ${CLUSTER_INFO_PLATFORM_NAME}-${CLUSTER_INFO_ENVIRONMENT}
+    env: ${CLUSTER_INFO_ENVIRONMENT}
+  externalUrl: https://${CLUSTER_INFO_MONITORING_URL}/prometheus
+  image: quay.io/prometheus/prometheus:v2.41.0
+  nodeSelector:
+    kubernetes.io/os: linux
+  podMetadata:
+    labels:
+      app.kubernetes.io/component: prometheus
+      app.kubernetes.io/instance: k8s
+      app.kubernetes.io/name: prometheus
+      app.kubernetes.io/part-of: kube-prometheus
+      app.kubernetes.io/version: 2.41.0
+  podMonitorNamespaceSelector: {}
+  podMonitorSelector: {}
+  probeNamespaceSelector: {}
+  probeSelector: {}
+  remoteWrite:
+  - url: http://remote-write-url.com
+  replicas: 2
+  resources:
+    requests:
+      memory: 100Mi
+  retention: 4h
+  ruleNamespaceSelector: {}
+  securityContext:
+    fsGroup: 2000
+    runAsNonRoot: true
+    runAsUser: 1000
+  serviceAccountName: prometheus-k8s
+  serviceMonitorNamespaceSelector: {}
+  serviceMonitorSelector: {}
+  storage:
+    volumeClaimTemplate:
+      apiVersion: v1
+      kind: PersistentVolumeClaim
+      spec:
+        accessModes:
+        - ReadWriteOnce
+        resources:
+          requests:
+            storage: 50Gi
+  version: 2.41.0
