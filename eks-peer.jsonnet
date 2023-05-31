@@ -69,7 +69,7 @@ local kp =
             env: "${CLUSTER_INFO_ENVIRONMENT}",
           },
           remoteWrite: [{
-            url: 'http://remote-write-url.com',
+            url: 'http://mimir-nginx.observability.svc/api/v1/push',
           }],
           storage: {
             volumeClaimTemplate: {

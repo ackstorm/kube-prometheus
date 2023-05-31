@@ -51,7 +51,7 @@ spec:
   probeNamespaceSelector: {}
   probeSelector: {}
   remoteWrite:
-  - url: http://remote-write-url.com
+  - url: http://mimir-nginx.observability.svc/api/v1/push
   replicas: 2
   resources:
     requests:
