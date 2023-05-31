@@ -52,7 +52,7 @@ spec:
   probeSelector: {}
   remoteWrite:
   - url: http://mimir-nginx.observability.svc/api/v1/push
-  replicas: 2
+  replicas: 1
   resources:
     requests:
       memory: 100Mi

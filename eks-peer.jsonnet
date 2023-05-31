@@ -61,7 +61,7 @@ local kp =
           enableAdminAPI: false,
           alerting:: {},
           ruleSelector:: {},
-          replicas: 2,
+          replicas: 1, # the sample has been rejected because another sample with a more recent timestamp has already been ingeste
           retention: "4h",
           externalUrl: "https://${CLUSTER_INFO_MONITORING_URL}/prometheus",
           externalLabels: {
