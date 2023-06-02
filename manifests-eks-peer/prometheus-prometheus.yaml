@@ -51,7 +51,9 @@ spec:
   probeNamespaceSelector: {}
   probeSelector: {}
   remoteWrite:
-  - url: http://mimir-nginx.observability.svc/api/v1/push
+  - headers:
+      X-Scope-OrgID: default
+    url: http://mimir-nginx.observability.svc/api/v1/push
   replicas: 1
   resources:
     requests:
