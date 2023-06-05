@@ -62,7 +62,7 @@ local kp =
           alerting:: {},
           ruleSelector:: {
             matchLabels: {
-              remote: "false",
+              role: "prometheus-rule-local",
             }
           },
           replicas: 2,
