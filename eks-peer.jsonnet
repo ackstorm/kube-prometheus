@@ -68,10 +68,6 @@ local kp =
           replicas: 2,
           retention: "4h",
           externalUrl: "https://${CLUSTER_INFO_MONITORING_URL}/prometheus-local",
-          additionalAlertManagerConfigs: {
-            name: "alertmanager-config",
-            key: "alertmanager-config.yaml",
-          },
           externalLabels: {
             cluster: "${CLUSTER_INFO_PLATFORM_NAME}-${CLUSTER_INFO_ENVIRONMENT}",
             env: "${CLUSTER_INFO_ENVIRONMENT}",

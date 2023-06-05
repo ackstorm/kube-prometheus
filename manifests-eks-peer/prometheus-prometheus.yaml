@@ -10,9 +10,6 @@ metadata:
   name: k8s
   namespace: observability
 spec:
-  additionalAlertManagerConfigs:
-    key: alertmanager-config.yaml
-    name: alertmanager-config
   affinity:
     podAntiAffinity:
       preferredDuringSchedulingIgnoredDuringExecution:
