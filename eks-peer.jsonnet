@@ -60,7 +60,7 @@ local kp =
         spec+: {
           enableAdminAPI: false,
           alerting:: {},
-          ruleSelector:: {
+          ruleSelector: {
             matchLabels: {
               role: "prometheus-rule-local",
             }

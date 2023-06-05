@@ -60,6 +60,9 @@ spec:
       memory: 100Mi
   retention: 4h
   ruleNamespaceSelector: {}
+  ruleSelector:
+    matchLabels:
+      role: prometheus-rule-local
   securityContext:
     fsGroup: 2000
     runAsNonRoot: true
