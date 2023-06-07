@@ -74,7 +74,7 @@ local kp =
           remoteWrite: [{
             url: 'http://${OBSERVER_URL}/api/v1/push',
             headers: {
-              "X-Scope-OrgID": "${TENANT_ID}"
+              "X-Scope-OrgID": "${ENVIRONMENT}-${CLUSTER_NAME}"
             }
           }],
           storage: {

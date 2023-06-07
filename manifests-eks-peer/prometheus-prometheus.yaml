@@ -51,7 +51,7 @@ spec:
   probeSelector: {}
   remoteWrite:
   - headers:
-      X-Scope-OrgID: ${TENANT_ID}
+      X-Scope-OrgID: ${ENVIRONMENT}-${CLUSTER_NAME}
     url: http://${OBSERVER_URL}/api/v1/push
   replicas: 2
   resources:
