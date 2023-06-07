@@ -10,7 +10,6 @@ local kp =
         platform: 'eks'
       },
       prometheus+: {
-        name: 'peer',
         resources: {
           requests: { memory: '100Mi' },
         },
