@@ -33,7 +33,7 @@ spec:
   - memory-snapshot-on-shutdown
   - remote-write-receiver
   externalLabels:
-    cluster: ${CLUSTER}
+    cluster: ${ENVIRONMENT}-${CLUSTER}
     env: ${ENVIRONMENT}
   image: quay.io/prometheus/prometheus:v2.41.0
   nodeSelector:

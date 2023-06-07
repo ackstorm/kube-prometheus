@@ -68,7 +68,7 @@ local kp =
           replicas: 2,
           retention: "4h",
           externalLabels: {
-            cluster: "${CLUSTER}",
+            cluster: "${ENVIRONMENT}-${CLUSTER}",
             env: "${ENVIRONMENT}",
           },
           remoteWrite: [{
