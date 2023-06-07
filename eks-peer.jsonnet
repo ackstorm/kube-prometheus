@@ -68,13 +68,13 @@ local kp =
           replicas: 2,
           retention: "4h",
           externalLabels: {
-            cluster: "${CLUSTER_NAME}",
+            cluster: "${CLUSTER}",
             env: "${ENVIRONMENT}",
           },
           remoteWrite: [{
             url: '${OBSERVER_URL}/api/v1/push',
             headers: {
-              "X-Scope-OrgID": "${ENVIRONMENT}-${CLUSTER_NAME}"
+              "X-Scope-OrgID": "${ENVIRONMENT}-${CLUSTER}"
             }
           }],
           storage: {
