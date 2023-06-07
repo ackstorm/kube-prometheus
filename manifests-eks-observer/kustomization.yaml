@@ -9,3 +9,4 @@ resources:
 - node-exporter-prometheusRule.yaml
 - prometheus-operator-prometheusRule.yaml
 - prometheus-prometheusRule.yaml
+- setup/0namespace-namespace.yaml

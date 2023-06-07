@@ -37,7 +37,7 @@ local kp =
     }
   };
 
-#{ 'setup/0namespace-namespace': kp.kubePrometheus.namespace } +
+{ 'setup/0namespace-namespace': kp.kubePrometheus.namespace } +
 { 'prometheus-operator-prometheusRule': kp.prometheusOperator.prometheusRule } +
 { 'kube-prometheus-prometheusRule': kp.kubePrometheus.prometheusRule } +
 {

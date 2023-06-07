@@ -6,10 +6,11 @@ local kp =
   {
     values+:: {
       common+: {
-        namespace: 'observability',
+        namespace: 'observability-peer',
         platform: 'eks'
       },
       prometheus+: {
+        name: 'peer',
         resources: {
           requests: { memory: '100Mi' },
         },
@@ -103,6 +104,7 @@ local kp =
     }
   };
 
+# Do not install prometheus rules
 { 'setup/0namespace-namespace': kp.kubePrometheus.namespace } +
 {
   ['setup/prometheus-operator-' + name]: kp.prometheusOperator[name]
