@@ -62,19 +62,17 @@ local kp =
           alerting:: {},
           ruleSelector: {
             matchLabels: {
-              role: "prometheus-rule-local",
+              role: "peer",
             }
           },
           replicas: 2,
           retention: "4h",
-          externalUrl: "https://${CLUSTER_INFO_MONITORING_URL}/prometheus-local",
           externalLabels: {
-            cluster: "${CLUSTER_INFO_PLATFORM_NAME}-${CLUSTER_INFO_ENVIRONMENT}",
-            env: "${CLUSTER_INFO_ENVIRONMENT}",
-            type: "peer"
+            cluster: "${CLUSTER_NAME}",
+            env: "${ENVIRONMENT}",
           },
           remoteWrite: [{
-            url: 'http://mimir-nginx.observability.svc/api/v1/push',
+            url: 'http://${OBSERVER_URL}/api/v1/push',
             headers: {
               "X-Scope-OrgID": "${TENANT_ID}"
             }
@@ -87,7 +85,7 @@ local kp =
                 accessModes: ['ReadWriteOnce'],
                 resources: { 
                   requests: { 
-                    storage: '50Gi' 
+                    storage: '${VOLUME_SIZE}Gi' 
                   }
                 },
                 // storageClassName: 'ssd',
