@@ -71,11 +71,12 @@ local kp =
           externalLabels: {
             cluster: "${CLUSTER_INFO_PLATFORM_NAME}-${CLUSTER_INFO_ENVIRONMENT}",
             env: "${CLUSTER_INFO_ENVIRONMENT}",
+            type: "peer"
           },
           remoteWrite: [{
             url: 'http://mimir-nginx.observability.svc/api/v1/push',
             headers: {
-              "X-Scope-OrgID": "default"
+              "X-Scope-OrgID": "${TENANT_ID}"
             }
           }],
           storage: {

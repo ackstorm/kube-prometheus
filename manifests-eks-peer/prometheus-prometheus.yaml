@@ -35,6 +35,7 @@ spec:
   externalLabels:
     cluster: ${CLUSTER_INFO_PLATFORM_NAME}-${CLUSTER_INFO_ENVIRONMENT}
     env: ${CLUSTER_INFO_ENVIRONMENT}
+    type: peer
   externalUrl: https://${CLUSTER_INFO_MONITORING_URL}/prometheus-local
   image: quay.io/prometheus/prometheus:v2.41.0
   nodeSelector:
@@ -52,7 +53,7 @@ spec:
   probeSelector: {}
   remoteWrite:
   - headers:
-      X-Scope-OrgID: default
+      X-Scope-OrgID: ${TENANT_ID}
     url: http://mimir-nginx.observability.svc/api/v1/push
   replicas: 2
   resources:
