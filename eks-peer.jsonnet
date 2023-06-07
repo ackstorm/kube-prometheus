@@ -72,7 +72,7 @@ local kp =
             env: "${ENVIRONMENT}",
           },
           remoteWrite: [{
-            url: 'http://${OBSERVER_URL}/api/v1/push',
+            url: '${OBSERVER_URL}/api/v1/push',
             headers: {
               "X-Scope-OrgID": "${ENVIRONMENT}-${CLUSTER_NAME}"
             }

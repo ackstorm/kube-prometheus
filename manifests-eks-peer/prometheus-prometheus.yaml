@@ -52,7 +52,7 @@ spec:
   remoteWrite:
   - headers:
       X-Scope-OrgID: ${ENVIRONMENT}-${CLUSTER_NAME}
-    url: http://${OBSERVER_URL}/api/v1/push
+    url: ${OBSERVER_URL}/api/v1/push
   replicas: 2
   resources:
     requests:
