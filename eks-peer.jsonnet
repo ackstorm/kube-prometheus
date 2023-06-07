@@ -7,6 +7,7 @@ local kp =
     values+:: {
       common+: {
         namespace: 'observability-peer',
+        name: 'peer',
         platform: 'eks'
       },
       prometheus+: {
