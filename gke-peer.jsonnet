@@ -6,7 +6,8 @@ local kp =
   {
     values+:: {
       common+: {
-        namespace: 'observability',
+        namespace: 'observability-peer',
+        name: 'peer',
         platform: 'gke'
       },
       prometheus+: {
@@ -60,19 +61,22 @@ local kp =
         spec+: {
           enableAdminAPI: false,
           alerting:: {},
-          ruleSelector:: {},
+          ruleSelector: {
+            matchLabels: {
+              role: "peer",
+            }
+          },
           replicas: 2,
           retention: "4h",
-          externalUrl: "https://${CLUSTER_INFO_MONITORING_URL}/prometheus",
           externalLabels: {
-            cluster: "${CLUSTER_INFO_PLATFORM_NAME}-${CLUSTER_INFO_ENVIRONMENT}",
-            env: "${CLUSTER_INFO_ENVIRONMENT}",
+            cluster: "${ENVIRONMENT}-${CLUSTER}",
+            env: "${ENVIRONMENT}",
           },
           remoteWrite: [{
-            url: 'http://mimir-nginx.observability.svc/api/v1/push',
-            #headers: {
-            #  "X-Scope-OrgID": "${CLUSTER_INFO_PLATFORM_NAME}-${CLUSTER_INFO_ENVIRONMENT}"
-            #}
+            url: '${OBSERVER_URL}/api/v1/push',
+            headers: {
+              "X-Scope-OrgID": "${ENVIRONMENT}-${CLUSTER}"
+            }
           }],
           storage: {
             volumeClaimTemplate: {
@@ -82,7 +86,7 @@ local kp =
                 accessModes: ['ReadWriteOnce'],
                 resources: { 
                   requests: { 
-                    storage: '50Gi' 
+                    storage: '${VOLUME_SIZE}Gi' 
                   }
                 },
                 // storageClassName: 'ssd',
@@ -100,6 +104,7 @@ local kp =
     }
   };
 
+# Do not install prometheus rules
 { 'setup/0namespace-namespace': kp.kubePrometheus.namespace } +
 {
   ['setup/prometheus-operator-' + name]: kp.prometheusOperator[name]

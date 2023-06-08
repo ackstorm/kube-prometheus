@@ -8,7 +8,7 @@ metadata:
     app.kubernetes.io/part-of: kube-prometheus
     app.kubernetes.io/version: 2.41.0
   name: k8s
-  namespace: observability
+  namespace: observability-peer
 spec:
   affinity:
     podAntiAffinity:
@@ -21,7 +21,7 @@ spec:
               app.kubernetes.io/name: prometheus
               app.kubernetes.io/part-of: kube-prometheus
           namespaces:
-          - observability
+          - observability-peer
           topologyKey: kubernetes.io/hostname
         weight: 100
   containers:
@@ -33,9 +33,8 @@ spec:
   - memory-snapshot-on-shutdown
   - remote-write-receiver
   externalLabels:
-    cluster: ${CLUSTER_INFO_PLATFORM_NAME}-${CLUSTER_INFO_ENVIRONMENT}
-    env: ${CLUSTER_INFO_ENVIRONMENT}
-  externalUrl: https://${CLUSTER_INFO_MONITORING_URL}/prometheus
+    cluster: ${ENVIRONMENT}-${CLUSTER}
+    env: ${ENVIRONMENT}
   image: quay.io/prometheus/prometheus:v2.41.0
   nodeSelector:
     kubernetes.io/os: linux
@@ -51,13 +50,18 @@ spec:
   probeNamespaceSelector: {}
   probeSelector: {}
   remoteWrite:
-  - url: http://mimir-nginx.observability.svc/api/v1/push
+  - headers:
+      X-Scope-OrgID: ${ENVIRONMENT}-${CLUSTER}
+    url: ${OBSERVER_URL}/api/v1/push
   replicas: 2
   resources:
     requests:
       memory: 100Mi
   retention: 4h
   ruleNamespaceSelector: {}
+  ruleSelector:
+    matchLabels:
+      role: peer
   securityContext:
     fsGroup: 2000
     runAsNonRoot: true
@@ -74,5 +78,5 @@ spec:
         - ReadWriteOnce
         resources:
           requests:
-            storage: 50Gi
+            storage: ${VOLUME_SIZE}Gi
   version: 2.41.0
