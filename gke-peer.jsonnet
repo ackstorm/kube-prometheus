@@ -45,7 +45,7 @@ local kp =
               containers: [
                 if x.name == "kube-state-metrics"
                 then x { args+: [
-                  "--metric-labels-allowlist=nodes=[*]" # Extract all labels from node
+                  "--metric-labels-allowlist=nodes=[node_pool,eks_amazonaws_com_nodegroup]" # Extract all labels from node
                   ] 
                 }
                 else x
