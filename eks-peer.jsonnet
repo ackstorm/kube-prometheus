@@ -164,4 +164,5 @@ local kp =
 {
   ['prometheus-' + name]: kp.prometheus[name]
   for name in std.filter((function(name) name != 'prometheusRule'), std.objectFields(kp.prometheus))
-}
+} +
+{ ['resourcequota-' + name]: kp.resourceQuota[name] for name in std.objectFields(kp.resourceQuota) }
