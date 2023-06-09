@@ -14,7 +14,32 @@ local kp =
         resources: {
           requests: { memory: '100Mi' },
         },
-        enableFeatures: ["memory-snapshot-on-shutdown", "remote-write-receiver"],
+        enableFeatures: ["memory-snapshot-on-shutdown"],
+      },
+    },
+    resourceQuota: {
+      resourceQuota: {
+        apiVersion: 'v1',
+        kind: 'ResourceQuota',
+        metadata: {
+          name: 'observability',
+          namespace: 'observability-peer',
+        },
+        spec: {
+          hard: {
+            pods: '1G',
+          },
+          scopeSelector: [
+            {
+              operator: 'In',
+              scopeName: 'PriorityClass',
+              values: [
+                'system-node-critical',
+                'system-cluster-critical'
+              ]
+            }
+          ]
+        },
       },
     },
     kubeStateMetrics+: {
@@ -29,6 +54,16 @@ local kp =
                 replacement: "kube-state-metrics", # Avoid duplicate metrics with multiple replicas
                 sourceLabels: ["__name__"],
                 targetLabel: "instance"
+              },
+              {
+                sourceLabels: ["label_node_pool"],
+                regex: "(.+)",
+                targetLabel: "node_pool"
+              },
+               {
+                sourceLabels: ["eks_amazonaws_com_nodegroup"],
+                regex: "(.+)",
+                targetLabel: "node_pool"
               }
             ] 
             }
@@ -45,7 +80,7 @@ local kp =
               containers: [
                 if x.name == "kube-state-metrics"
                 then x { args+: [
-                  "--metric-labels-allowlist=nodes=[node_pool,eks_amazonaws_com_nodegroup]" # Extract all labels from node
+                  "--metric-labels-allowlist=nodes=[node_pool,eks_amazonaws_com_nodegroup]" # Extract nodegroup labels from node
                   ] 
                 }
                 else x

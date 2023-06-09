@@ -24,6 +24,14 @@ spec:
       sourceLabels:
       - __name__
       targetLabel: instance
+    - regex: (.+)
+      sourceLabels:
+      - label_node_pool
+      targetLabel: node_pool
+    - regex: (.+)
+      sourceLabels:
+      - eks_amazonaws_com_nodegroup
+      targetLabel: node_pool
     port: https-main
     relabelings:
     - action: labeldrop
