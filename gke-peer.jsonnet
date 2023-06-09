@@ -29,16 +29,18 @@ local kp =
           hard: {
             pods: '1G',
           },
-          scopeSelector: [
-            {
+          scopeSelector: {
+            matchExpressions: [
+              {
               operator: 'In',
               scopeName: 'PriorityClass',
               values: [
                 'system-node-critical',
                 'system-cluster-critical'
               ]
-            }
-          ]
+              }
+            ]
+          }
         },
       },
     },
