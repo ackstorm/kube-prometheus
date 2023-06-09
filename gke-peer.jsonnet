@@ -17,8 +17,8 @@ local kp =
         enableFeatures: ["memory-snapshot-on-shutdown"],
       },
     },
-    resourceQuota: {
-      resourceQuota: {
+    priorityClass: {
+      priorityClass: {
         apiVersion: 'v1',
         kind: 'ResourceQuota',
         metadata: {
@@ -165,4 +165,4 @@ local kp =
   ['prometheus-' + name]: kp.prometheus[name]
   for name in std.filter((function(name) name != 'prometheusRule'), std.objectFields(kp.prometheus))
 } +
-{ ['resourcequota-' + name]: kp.resourceQuota[name] for name in std.objectFields(kp.resourceQuota) }
+{ ['resourcequota-' + name]: kp.priorityClass[name] for name in std.objectFields(kp.priorityClass) }
