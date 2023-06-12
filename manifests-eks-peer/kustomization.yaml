@@ -38,7 +38,6 @@ resources:
 - prometheus-service.yaml
 - prometheus-serviceAccount.yaml
 - prometheus-serviceMonitor.yaml
-- resourcequota-priorityClass.yaml
 - setup/0namespace-namespace.yaml
 - setup/prometheus-operator-0alertmanagerConfigCustomResourceDefinition.yaml
 - setup/prometheus-operator-0alertmanagerCustomResourceDefinition.yaml
@@ -54,3 +53,4 @@ resources:
 - setup/prometheus-operator-networkPolicy.yaml
 - setup/prometheus-operator-service.yaml
 - setup/prometheus-operator-serviceAccount.yaml
+- setup/resourcequota-priorityClass.yaml
