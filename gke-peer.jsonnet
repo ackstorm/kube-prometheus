@@ -14,7 +14,7 @@ local kp =
         resources: {
           requests: { memory: '100Mi' },
         },
-        enableFeatures: ["memory-snapshot-on-shutdown"],
+        enableFeatures: ["memory-snapshot-on-shutdown", "exemplar-storage"],
       },
     },
     priorityClass: {
