@@ -14,7 +14,8 @@ local kp =
         resources: {
           requests: { memory: '100Mi' },
         },
-        enableFeatures: ["memory-snapshot-on-shutdown", "exemplar-storage"],
+        enableFeatures: ["memory-snapshot-on-shutdown", "remote-write-receiver", "exemplar-storage"],
+        # remote-write-received: allow opentelemetry to push metrics
       },
     },
     priorityClass: {
