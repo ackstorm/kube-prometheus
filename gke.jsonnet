@@ -14,7 +14,8 @@ local kp =
         resources: {
           requests: { memory: '100Mi' },
         },
-        enableFeatures: ["memory-snapshot-on-shutdown"],
+        enableFeatures: ["memory-snapshot-on-shutdown", "remote-write-receiver", "exemplar-storage"],
+        # remote-write-received: allow opentelemetry to push metrics
       },
     },
     priorityClass: {
@@ -105,6 +106,9 @@ local kp =
           },
           replicas: 2,
           retention: "4h",
+          tsdb: {
+            outOfOrderTimeWindow: "5m"
+          },
           externalLabels: {
             cluster: "${ENVIRONMENT}-${CLUSTER}",
             env: "${ENVIRONMENT}",
@@ -115,6 +119,14 @@ local kp =
               "X-Scope-OrgID": "${ENVIRONMENT}-${CLUSTER}"
             }
           }],
+          additionalScrapeConfigs: {
+            name: "additional-scrape-configs",
+            key: "additional-scrape-configs-secret.yaml",
+          },
+          additionalAlertRelabelConfigs: {
+            name: "additional-relabel-configs",
+            key: "additional-relabel-configs-secret.yaml",
+          },
           storage: {
             volumeClaimTemplate: {
               apiVersion: 'v1',
@@ -146,7 +158,7 @@ local kp =
 { ['setup/resourcequota-' + name]: kp.priorityClass[name] for name in std.objectFields(kp.priorityClass) } +
 {
   ['setup/prometheus-operator-' + name]: kp.prometheusOperator[name]
-  for name in std.filter((function(name) name != 'serviceMonitor' && name != 'prometheusRule'), std.objectFields(kp.prometheusOperator))
+  for name in std.filter((function(name) name != 'prometheusRule'), std.objectFields(kp.prometheusOperator))
 } +
 {
   ['blackbox-exporter-' + name]: kp.blackboxExporter[name]

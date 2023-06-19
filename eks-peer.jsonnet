@@ -119,6 +119,14 @@ local kp =
               "X-Scope-OrgID": "${ENVIRONMENT}-${CLUSTER}"
             }
           }],
+          additionalScrapeConfigs: {
+            name: "additional-scrape-configs",
+            key: "additional-scrape-configs-secret.yaml",
+          },
+          additionalAlertRelabelConfigs: {
+            name: "additional-relabel-configs",
+            key: "additional-relabel-configs-secret.yaml",
+          },
           storage: {
             volumeClaimTemplate: {
               apiVersion: 'v1',

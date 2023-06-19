@@ -10,6 +10,12 @@ metadata:
   name: k8s
   namespace: observability-peer
 spec:
+  additionalAlertRelabelConfigs:
+    key: additional-relabel-configs-secret.yaml
+    name: additional-relabel-configs
+  additionalScrapeConfigs:
+    key: additional-scrape-configs-secret.yaml
+    name: additional-scrape-configs
   affinity:
     podAntiAffinity:
       preferredDuringSchedulingIgnoredDuringExecution:
@@ -31,6 +37,8 @@ spec:
   enableAdminAPI: false
   enableFeatures:
   - memory-snapshot-on-shutdown
+  - remote-write-receiver
+  - exemplar-storage
   externalLabels:
     cluster: ${ENVIRONMENT}-${CLUSTER}
     env: ${ENVIRONMENT}
@@ -78,4 +86,6 @@ spec:
         resources:
           requests:
             storage: ${VOLUME_SIZE}Gi
+  tsdb:
+    outOfOrderTimeWindow: 5m
   version: 2.41.0

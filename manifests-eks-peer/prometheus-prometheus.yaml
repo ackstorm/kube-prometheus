@@ -10,6 +10,12 @@ metadata:
   name: k8s
   namespace: observability-peer
 spec:
+  additionalAlertRelabelConfigs:
+    key: additional-relabel-configs-secret.yaml
+    name: additional-relabel-configs
+  additionalScrapeConfigs:
+    key: additional-scrape-configs-secret.yaml
+    name: additional-scrape-configs
   affinity:
     podAntiAffinity:
       preferredDuringSchedulingIgnoredDuringExecution:

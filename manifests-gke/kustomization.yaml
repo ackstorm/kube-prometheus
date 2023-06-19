@@ -51,4 +51,5 @@ resources:
 - setup/prometheus-operator-networkPolicy.yaml
 - setup/prometheus-operator-service.yaml
 - setup/prometheus-operator-serviceAccount.yaml
+- setup/prometheus-operator-serviceMonitor.yaml
 - setup/resourcequota-priorityClass.yaml
