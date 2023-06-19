@@ -147,7 +147,7 @@ local kp =
 { ['setup/resourcequota-' + name]: kp.priorityClass[name] for name in std.objectFields(kp.priorityClass) } +
 {
   ['setup/prometheus-operator-' + name]: kp.prometheusOperator[name]
-  for name in std.filter((function(name) name != 'serviceMonitor' && name != 'prometheusRule'), std.objectFields(kp.prometheusOperator))
+  for name in std.filter((function(name) name != 'prometheusRule'), std.objectFields(kp.prometheusOperator))
 } +
 {
   ['blackbox-exporter-' + name]: kp.blackboxExporter[name]
