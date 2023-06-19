@@ -106,6 +106,9 @@ local kp =
           },
           replicas: 2,
           retention: "4h",
+          tsdb: {
+            outOfOrderTimeWindow: "30m"
+          },
           externalLabels: {
             cluster: "${ENVIRONMENT}-${CLUSTER}",
             env: "${ENVIRONMENT}",
