@@ -81,5 +81,5 @@ spec:
           requests:
             storage: ${VOLUME_SIZE}Gi
   tsdb:
-    outOfOrderTimeWindow: 30m
+    outOfOrderTimeWindow: 5m
   version: 2.41.0
