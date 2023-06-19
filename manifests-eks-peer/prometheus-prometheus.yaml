@@ -11,10 +11,10 @@ metadata:
   namespace: observability-peer
 spec:
   additionalAlertRelabelConfigs:
-    key: additional-relabel-configs-secret.yaml
+    key: additional-relabel-configs.yaml
     name: additional-relabel-configs
   additionalScrapeConfigs:
-    key: additional-scrape-configs-secret.yaml
+    key: additional-scrape-configs.yaml
     name: additional-scrape-configs
   affinity:
     podAntiAffinity:

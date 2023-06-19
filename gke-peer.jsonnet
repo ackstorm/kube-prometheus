@@ -8,7 +8,7 @@ local kp =
       common+: {
         namespace: 'observability-peer',
         name: 'peer',
-        platform: 'gke'
+        platform: 'eks'
       },
       prometheus+: {
         resources: {
@@ -119,6 +119,14 @@ local kp =
               "X-Scope-OrgID": "${ENVIRONMENT}-${CLUSTER}"
             }
           }],
+          additionalScrapeConfigs: {
+            name: "additional-scrape-configs",
+            key: "additional-scrape-configs.yaml",
+          },
+          additionalAlertRelabelConfigs: {
+            name: "additional-relabel-configs",
+            key: "additional-relabel-configs.yaml",
+          },
           storage: {
             volumeClaimTemplate: {
               apiVersion: 'v1',

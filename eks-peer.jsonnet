@@ -121,11 +121,11 @@ local kp =
           }],
           additionalScrapeConfigs: {
             name: "additional-scrape-configs",
-            key: "additional-scrape-configs-secret.yaml",
+            key: "additional-scrape-configs.yaml",
           },
           additionalAlertRelabelConfigs: {
             name: "additional-relabel-configs",
-            key: "additional-relabel-configs-secret.yaml",
+            key: "additional-relabel-configs.yaml",
           },
           storage: {
             volumeClaimTemplate: {
