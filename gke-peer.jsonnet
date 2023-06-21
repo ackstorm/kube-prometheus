@@ -104,7 +104,7 @@ local kp =
               role: "peer",
             }
           },
-          replicas: 2,
+          replicas: 1,
           retention: "4h",
           tsdb: {
             outOfOrderTimeWindow: "5m"
