@@ -118,9 +118,10 @@ local kp =
             headers: {
               "X-Scope-OrgID": "${ENVIRONMENT}-${CLUSTER}"
             },
-            write_relabel_configs: [{
-              source_labels: ["__name__"],
-              target_label: "__name__",
+            sendExemplars: true,
+            writeRelabelConfigs: [{
+              sourceLabels: ["__name__"],
+              targetLabel: "__name__",
               regex: "(.*)"
             }]
           }],
