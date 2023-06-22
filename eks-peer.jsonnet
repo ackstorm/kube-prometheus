@@ -17,6 +17,11 @@ local kp =
         enableFeatures: ["memory-snapshot-on-shutdown", "remote-write-receiver", "exemplar-storage"],
         # remote-write-received: allow opentelemetry to push metrics
       },
+      nodeExporter+: {
+      resources+: {
+        requests: { cpu: '50m' },
+      },
+    },
     },
     priorityClass: {
       priorityClass: {
