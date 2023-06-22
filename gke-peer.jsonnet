@@ -119,7 +119,7 @@ local kp =
               "X-Scope-OrgID": "${ENVIRONMENT}-${CLUSTER}"
             },
             write_relabel_configs: [{
-              source_labels: "[__name__]",
+              source_labels: ["__name__"],
               target_label: "__name__",
               regex: "(.*)"
             }]
