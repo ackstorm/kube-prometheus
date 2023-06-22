@@ -117,7 +117,12 @@ local kp =
             url: '${OBSERVER_URL}/api/v1/push',
             headers: {
               "X-Scope-OrgID": "${ENVIRONMENT}-${CLUSTER}"
-            }
+            },
+            write_relabel_configs: [{
+              source_labels: "[__name__]",
+              target_label: "__name__",
+              regex: "(.*)"
+            }]
           }],
           additionalScrapeConfigs: {
             name: "additional-scrape-configs",
