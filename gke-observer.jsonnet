@@ -32,7 +32,10 @@ local kp =
     values+:: {
       common+: {
         namespace: 'observability',
-        platform: 'gke'
+        platform: 'gke',
+        ruleLabels: {
+          role: 'default',
+        }
       }
     }
   };

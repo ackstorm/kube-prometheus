@@ -7,8 +7,7 @@ metadata:
     app.kubernetes.io/name: alertmanager
     app.kubernetes.io/part-of: kube-prometheus
     app.kubernetes.io/version: 0.25.0
-    prometheus: k8s
-    role: alert-rules
+    role: default
   name: alertmanager-main-rules
   namespace: observability
 spec:

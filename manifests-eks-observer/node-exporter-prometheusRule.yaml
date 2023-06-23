@@ -6,8 +6,7 @@ metadata:
     app.kubernetes.io/name: node-exporter
     app.kubernetes.io/part-of: kube-prometheus
     app.kubernetes.io/version: 1.5.0
-    prometheus: k8s
-    role: alert-rules
+    role: default
   name: node-exporter-rules
   namespace: observability
 spec:

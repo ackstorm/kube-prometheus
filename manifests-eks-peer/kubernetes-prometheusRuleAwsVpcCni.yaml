@@ -1,0 +1,23 @@
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata:
+  labels:
+    app.kubernetes.io/component: prometheus
+    app.kubernetes.io/name: prometheus-vpc-cni-rules
+    app.kubernetes.io/part-of: kube-prometheus
+  name: aws-vpc-cni-rules
+  namespace: observability-peer
+spec:
+  groups:
+  - name: aws-vpc-cni.rules
+    rules:
+    - alert: AwsVpcCniWarmIPsLow
+      annotations:
+        description: |
+          Instance {{ $labels.instance }} has only {{ $value }} warm IPs which is lower than set threshold of 10.
+          It could mean the current subnet is out of available IP addresses or the CNI is unable to request them from the EC2 API.
+        summary: AWS VPC CNI has a low warm IP pool
+      expr: sum by(instance) (awscni_total_ip_addresses) - sum by(instance) (awscni_assigned_ip_addresses) < 10
+      for: 10m
+      labels:
+        severity: critical

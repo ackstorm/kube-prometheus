@@ -32,7 +32,10 @@ local kp =
     values+:: {
       common+: {
         namespace: 'observability',
-        platform: 'eks'
+        platform: 'eks',
+        ruleLabels: {
+          role: 'default',
+        }
       }
     }
   };

@@ -7,10 +7,10 @@ local kp =
     values+:: {
       common+: {
         namespace: 'observability-peer',
-        name: 'peer',
-        platform: 'gke'
+        platform: 'gke',
       },
       prometheus+: {
+        name: 'peer',
         resources: {
           requests: { memory: '100Mi' },
         },
@@ -18,17 +18,24 @@ local kp =
         # remote-write-received: allow opentelemetry to push metrics
       },
       nodeExporter+: {
-      resources+: {
-        requests: { cpu: '50m' },
+        name: 'node-exporter-peer',
+        resources+: {
+          requests: { cpu: '50m' },
+        },
       },
-    },
+      blackboxExporter+: {
+        name: 'peer'
+      },
+      kubernetesControlPlane+: {
+        name: 'peer'
+      }
     },
     priorityClass: {
       priorityClass: {
         apiVersion: 'v1',
         kind: 'ResourceQuota',
         metadata: {
-          name: 'observability',
+          name: 'observability-peer',
           namespace: 'observability-peer',
         },
         spec: {
@@ -51,6 +58,7 @@ local kp =
       },
     },
     kubeStateMetrics+: {
+      name: 'peer',
       serviceMonitor+: {
         spec+: {
           endpoints: [
@@ -101,6 +109,7 @@ local kp =
     },
     prometheus+: {
       prometheus+: {
+        name: 'peer',
         spec+: {
           enableAdminAPI: false,
           alerting:: {},
@@ -185,7 +194,7 @@ local kp =
 } +
 {
   ['kubernetes-' + name]: kp.kubernetesControlPlane[name]
-  for name in std.filter((function(name) name != 'prometheusRule' && name != 'prometheusRuleAwsVpcCni'), std.objectFields(kp.kubernetesControlPlane))
+  for name in std.filter((function(name) name != 'prometheusRule'), std.objectFields(kp.kubernetesControlPlane))
 } +
 {
   ['prometheus-' + name]: kp.prometheus[name]
