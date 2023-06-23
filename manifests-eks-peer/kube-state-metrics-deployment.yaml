@@ -6,7 +6,7 @@ metadata:
     app.kubernetes.io/name: kube-state-metrics
     app.kubernetes.io/part-of: kube-prometheus
     app.kubernetes.io/version: 2.7.0
-  name: peer
+  name: kube-state-metrics-peer
   namespace: observability-peer
 spec:
   replicas: 2
@@ -103,4 +103,4 @@ spec:
           runAsUser: 65532
       nodeSelector:
         kubernetes.io/os: linux
-      serviceAccountName: peer
+      serviceAccountName: kube-state-metrics-peer

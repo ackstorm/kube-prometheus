@@ -3,11 +3,11 @@ kind: Service
 metadata:
   labels:
     app.kubernetes.io/component: prometheus
-    app.kubernetes.io/instance: prometheus-peer
+    app.kubernetes.io/instance: peer
     app.kubernetes.io/name: prometheus
     app.kubernetes.io/part-of: kube-prometheus
     app.kubernetes.io/version: 2.41.0
-  name: prometheus-prometheus-peer
+  name: prometheus-peer
   namespace: observability-peer
 spec:
   ports:
@@ -19,7 +19,7 @@ spec:
     targetPort: reloader-web
   selector:
     app.kubernetes.io/component: prometheus
-    app.kubernetes.io/instance: prometheus-peer
+    app.kubernetes.io/instance: peer
     app.kubernetes.io/name: prometheus
     app.kubernetes.io/part-of: kube-prometheus
   sessionAffinity: ClientIP

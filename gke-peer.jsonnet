@@ -10,7 +10,7 @@ local kp =
         platform: 'gke',
       },
       prometheus+: {
-        name: 'prometheus-peer',
+        name: 'peer',
         resources: {
           requests: { memory: '100Mi' },
         },
@@ -58,7 +58,7 @@ local kp =
       },
     },
     kubeStateMetrics+: {
-      name: 'peer',
+      name: 'kube-state-metrics-peer',
       serviceMonitor+: {
         spec+: {
           endpoints: [
