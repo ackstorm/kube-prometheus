@@ -9,7 +9,6 @@ metadata:
     app.kubernetes.io/version: 2.41.0
   name: peer
   namespace: observability-peer
-name: peer
 spec:
   additionalAlertRelabelConfigs:
     key: additional-relabel-configs.yaml

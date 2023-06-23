@@ -109,7 +109,6 @@ local kp =
     },
     prometheus+: {
       prometheus+: {
-        name: 'peer',
         spec+: {
           enableAdminAPI: false,
           alerting:: {},
