@@ -10,7 +10,7 @@ local kp =
         platform: 'eks',
       },
       prometheus+: {
-        name: 'peer',
+        name: 'prometheus-peer',
         resources: {
           requests: { memory: '100Mi' },
         },
@@ -24,10 +24,10 @@ local kp =
         },
       },
       blackboxExporter+: {
-        name: 'peer'
+        name: 'balckbox-exporter-peer'
       },
       kubernetesControlPlane+: {
-        name: 'peer'
+        name: 'kube-state-metrics-peer'
       }
     },
     priorityClass: {
