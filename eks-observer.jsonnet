@@ -33,9 +33,9 @@ local kp =
       common+: {
         namespace: 'observability',
         platform: 'eks',
-        ruleLabels: {
-          role: 'default',
-        }
+        #ruleLabels: {
+        #  role: 'default',
+        #}
       }
     }
   };

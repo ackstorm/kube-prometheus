@@ -6,7 +6,8 @@ metadata:
     app.kubernetes.io/name: kube-state-metrics
     app.kubernetes.io/part-of: kube-prometheus
     app.kubernetes.io/version: 2.7.0
-    role: default
+    prometheus: k8s
+    role: alert-rules
   name: kube-state-metrics-rules
   namespace: observability
 spec:

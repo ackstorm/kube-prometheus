@@ -6,7 +6,8 @@ metadata:
     app.kubernetes.io/name: prometheus-operator
     app.kubernetes.io/part-of: kube-prometheus
     app.kubernetes.io/version: 0.62.0
-    role: default
+    prometheus: k8s
+    role: alert-rules
   name: prometheus-operator-rules
   namespace: observability
 spec:

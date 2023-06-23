@@ -4,7 +4,8 @@ metadata:
   labels:
     app.kubernetes.io/name: kube-prometheus
     app.kubernetes.io/part-of: kube-prometheus
-    role: default
+    prometheus: k8s
+    role: alert-rules
   name: kubernetes-monitoring-rules
   namespace: observability
 spec:
