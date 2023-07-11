@@ -120,6 +120,15 @@ local kp =
         ]
       }
     },
+    kubePrometheus+: {
+      namespace+: {
+        metadata+:{
+          annotations: {
+            "goldilocks.fairwinds.com/enabled": "true" # Enable VPA recommendations
+          }
+        }
+      }
+    },
     prometheus+: {
       prometheus+: {
         spec+: {

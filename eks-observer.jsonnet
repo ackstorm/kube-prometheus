@@ -37,7 +37,16 @@ local kp =
         #  role: 'default',
         #}
       }
-    }
+    },
+    kubePrometheus+: {
+      namespace+: {
+        metadata+:{
+          annotations: {
+            "goldilocks.fairwinds.com/enabled": "true" # Enable VPA recommendations
+          }
+        }
+      }
+    },
   };
 
 { 'setup/0namespace-namespace': kp.kubePrometheus.namespace } +
