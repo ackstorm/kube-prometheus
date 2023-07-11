@@ -130,8 +130,8 @@ local kp =
             headers: {
               "X-Scope-OrgID": "${ENVIRONMENT}-${CLUSTER}"
             },
-            queue_config: {
-              max_samples_per_send: 10000
+            queueConfig: {
+              maxSamplesPerSend: 10000
             },
             sendExemplars: true,
             writeRelabelConfigs: [{

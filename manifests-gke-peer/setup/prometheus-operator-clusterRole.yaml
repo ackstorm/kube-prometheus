@@ -3,10 +3,10 @@ kind: ClusterRole
 metadata:
   labels:
     app.kubernetes.io/component: controller
-    app.kubernetes.io/name: prometheus-operator
+    app.kubernetes.io/name: prometheus-operator-peer
     app.kubernetes.io/part-of: kube-prometheus
     app.kubernetes.io/version: 0.62.0
-  name: prometheus-operator
+  name: prometheus-operator-peer
 rules:
 - apiGroups:
   - monitoring.coreos.com
