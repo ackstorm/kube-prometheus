@@ -8,6 +8,7 @@ set -o pipefail
 PATH="$(pwd)/tmp/bin:${PATH}"
 
 for JSONNET_FILE in $(ls -1 *.jsonnet); do
+#for JSONNET_FILE in $(ls -1 eks-peer.jsonnet); do
     MANIFEST_PATH=manifests-"${JSONNET_FILE%%.*}"
 
     echo "Building ${JSONNET_FILE} on ${MANIFEST_PATH}"
