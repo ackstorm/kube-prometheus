@@ -3,24 +3,24 @@ kind: DaemonSet
 metadata:
   labels:
     app.kubernetes.io/component: exporter
-    app.kubernetes.io/name: node-exporter-peer
+    app.kubernetes.io/name: node-exporter
     app.kubernetes.io/part-of: kube-prometheus
     app.kubernetes.io/version: 1.5.0
-  name: node-exporter-peer
+  name: node-exporter
   namespace: observability-peer
 spec:
   selector:
     matchLabels:
       app.kubernetes.io/component: exporter
-      app.kubernetes.io/name: node-exporter-peer
+      app.kubernetes.io/name: node-exporter
       app.kubernetes.io/part-of: kube-prometheus
   template:
     metadata:
       annotations:
-        kubectl.kubernetes.io/default-container: node-exporter-peer
+        kubectl.kubernetes.io/default-container: node-exporter
       labels:
         app.kubernetes.io/component: exporter
-        app.kubernetes.io/name: node-exporter-peer
+        app.kubernetes.io/name: node-exporter
         app.kubernetes.io/part-of: kube-prometheus
         app.kubernetes.io/version: 1.5.0
     spec:
@@ -37,7 +37,7 @@ spec:
         - --collector.netclass.ignored-devices=^(veth.*|[a-f0-9]{15})$
         - --collector.netdev.device-exclude=^(veth.*|[a-f0-9]{15})$
         image: quay.io/prometheus/node-exporter:v1.5.0
-        name: node-exporter-peer
+        name: node-exporter
         resources:
           limits:
             cpu: 250m
@@ -101,7 +101,7 @@ spec:
       securityContext:
         runAsNonRoot: true
         runAsUser: 65534
-      serviceAccountName: node-exporter-peer
+      serviceAccountName: node-exporter
       tolerations:
       - operator: Exists
       volumes:

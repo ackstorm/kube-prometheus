@@ -3,11 +3,11 @@ kind: Prometheus
 metadata:
   labels:
     app.kubernetes.io/component: prometheus
-    app.kubernetes.io/instance: peer
+    app.kubernetes.io/instance: prometheus-peer
     app.kubernetes.io/name: prometheus
     app.kubernetes.io/part-of: kube-prometheus
     app.kubernetes.io/version: 2.41.0
-  name: peer
+  name: prometheus-peer
   namespace: observability-peer
 spec:
   additionalAlertRelabelConfigs:
@@ -23,7 +23,7 @@ spec:
           labelSelector:
             matchLabels:
               app.kubernetes.io/component: prometheus
-              app.kubernetes.io/instance: peer
+              app.kubernetes.io/instance: prometheus-peer
               app.kubernetes.io/name: prometheus
               app.kubernetes.io/part-of: kube-prometheus
           namespaces:
@@ -48,7 +48,7 @@ spec:
   podMetadata:
     labels:
       app.kubernetes.io/component: prometheus
-      app.kubernetes.io/instance: peer
+      app.kubernetes.io/instance: prometheus-peer
       app.kubernetes.io/name: prometheus
       app.kubernetes.io/part-of: kube-prometheus
       app.kubernetes.io/version: 2.41.0
@@ -79,7 +79,7 @@ spec:
     fsGroup: 2000
     runAsNonRoot: true
     runAsUser: 1000
-  serviceAccountName: prometheus-peer
+  serviceAccountName: prometheus-prometheus-peer
   serviceMonitorNamespaceSelector: {}
   serviceMonitorSelector: {}
   storage:

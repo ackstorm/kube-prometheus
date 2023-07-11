@@ -10,7 +10,7 @@ local kp =
         platform: 'eks',
       },
       prometheus+: {
-        name: 'peer',
+        name: 'prometheus-peer',
         resources: {
           requests: { memory: '100Mi' },
         },
@@ -18,16 +18,16 @@ local kp =
         # remote-write-received: allow opentelemetry to push metrics
       },
       nodeExporter+: {
-        name: 'node-exporter-peer',
+        #name: 'node-exporter-peer',
         resources+: {
           requests: { cpu: '50m' },
         },
       },
       blackboxExporter+: {
-        name: 'balckbox-exporter-peer'
+        #name: 'blackbox-exporter-peer'
       },
       kubernetesControlPlane+: {
-        name: 'kube-state-metrics-peer'
+        #name: 'kube-state-metrics-peer'
       }
     },
     priorityClass: {
@@ -58,7 +58,7 @@ local kp =
       },
     },
     kubeStateMetrics+: {
-      name: 'kube-state-metrics-peer',
+      #name: 'kube-state-metrics-peer',
       serviceMonitor+: {
         spec+: {
           endpoints: [

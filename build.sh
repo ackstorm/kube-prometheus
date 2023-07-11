@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 set -e
-set -x
+#set -x
 set -o pipefail
 
 # Make sure to use project tooling
