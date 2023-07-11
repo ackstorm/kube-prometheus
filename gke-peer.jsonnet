@@ -94,8 +94,10 @@ local kp =
             spec+: {
               containers: [
                 if x.name == "kube-state-metrics"
-                then x { args+: [
-                  "--metric-labels-allowlist=nodes=[node_pool,eks_amazonaws_com_nodegroup]" # Extract nodegroup labels from node
+                then x { 
+                  args+: [
+                    "--metric-labels-allowlist=nodes=[node_pool,eks_amazonaws_com_nodegroup]", # Extract nodegroup labels from node
+                    "--resources=certificatesigningrequests,configmaps,cronjobs,daemonsets,deployments,endpoints,horizontalpodautoscalers,ingresses,jobs,leases,limitranges,mutatingwebhookconfigurations,namespaces,networkpolicies,nodes,persistentvolumeclaims,persistentvolumes,poddisruptionbudgets,pods,replicasets,replicationcontrollers,resourcequotas,secrets,services,statefulsets,storageclasses,validatingwebhookconfigurations,verticalpodautoscalers,volumeattachments" # add vpa
                   ] 
                 }
                 else x
@@ -104,6 +106,18 @@ local kp =
             }
           }
         }
+      },
+      clusterRole+: {
+        local rules = [
+          {
+            apiGroups: ['autoscaling'],
+            resources: [
+              'horizontalpodautoscalers',
+              'kakitas'
+            ],
+            verbs: ['list', 'watch'],
+          }
+        ]
       }
     },
     prometheus+: {
