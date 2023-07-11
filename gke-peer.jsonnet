@@ -18,17 +18,17 @@ local kp =
         # remote-write-received: allow opentelemetry to push metrics
       },
       nodeExporter+: {
-        #name: 'node-exporter-peer',
         resources+: {
           requests: { cpu: '50m' },
         },
       },
       blackboxExporter+: {
-        #name: 'blackbox-exporter-peer'
       },
       kubernetesControlPlane+: {
-        #name: 'kube-state-metrics-peer'
-      }
+      },
+      prometheusOperator+: {
+        name: "prometheus-operator-peer"
+      },
     },
     priorityClass: {
       priorityClass: {
@@ -58,7 +58,6 @@ local kp =
       },
     },
     kubeStateMetrics+: {
-      #name: 'kube-state-metrics-peer',
       serviceMonitor+: {
         spec+: {
           endpoints: [
@@ -130,6 +129,9 @@ local kp =
             url: '${OBSERVER_URL}/api/v1/push',
             headers: {
               "X-Scope-OrgID": "${ENVIRONMENT}-${CLUSTER}"
+            },
+            queue_config: {
+              max_samples_per_send: 10000
             },
             sendExemplars: true,
             writeRelabelConfigs: [{
