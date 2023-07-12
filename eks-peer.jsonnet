@@ -140,7 +140,7 @@ local kp =
             }
           },
           replicas: 2,
-          retention: "4h",
+          retention: "4d", # vpa recommender is configured for 4d pod history
           tsdb: {
             outOfOrderTimeWindow: "5m"
           },
