@@ -12,6 +12,11 @@ spec:
   endpoints:
   - bearerTokenFile: /var/run/secrets/kubernetes.io/serviceaccount/token
     interval: 15s
+    metricRelabelings:
+    - action: drop
+      regex: node_(nf_conntrack_stat|netstat_.*6|timex_pps|network_carrie|network_iface|scrape).*
+      sourceLabels:
+      - __name__
     port: https
     relabelings:
     - action: replace

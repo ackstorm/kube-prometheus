@@ -3,25 +3,25 @@ kind: Deployment
 metadata:
   labels:
     app.kubernetes.io/component: controller
-    app.kubernetes.io/name: prometheus-operator
+    app.kubernetes.io/name: prometheus-operator-peer
     app.kubernetes.io/part-of: kube-prometheus
     app.kubernetes.io/version: 0.62.0
-  name: prometheus-operator
+  name: prometheus-operator-peer
   namespace: observability-peer
 spec:
   replicas: 1
   selector:
     matchLabels:
       app.kubernetes.io/component: controller
-      app.kubernetes.io/name: prometheus-operator
+      app.kubernetes.io/name: prometheus-operator-peer
       app.kubernetes.io/part-of: kube-prometheus
   template:
     metadata:
       annotations:
-        kubectl.kubernetes.io/default-container: prometheus-operator
+        kubectl.kubernetes.io/default-container: prometheus-operator-peer
       labels:
         app.kubernetes.io/component: controller
-        app.kubernetes.io/name: prometheus-operator
+        app.kubernetes.io/name: prometheus-operator-peer
         app.kubernetes.io/part-of: kube-prometheus
         app.kubernetes.io/version: 0.62.0
     spec:
@@ -31,7 +31,7 @@ spec:
         - --kubelet-service=kube-system/kubelet
         - --prometheus-config-reloader=quay.io/prometheus-operator/prometheus-config-reloader:v0.62.0
         image: quay.io/prometheus-operator/prometheus-operator:v0.62.0
-        name: prometheus-operator
+        name: prometheus-operator-peer
         ports:
         - containerPort: 8080
           name: http
@@ -79,4 +79,4 @@ spec:
       securityContext:
         runAsNonRoot: true
         runAsUser: 65534
-      serviceAccountName: prometheus-operator
+      serviceAccountName: prometheus-operator-peer

@@ -107,18 +107,6 @@ local kp =
           }
         }
       },
-      clusterRole+: {
-        local rules = [
-          {
-            apiGroups: ['autoscaling'],
-            resources: [
-              'horizontalpodautoscalers',
-              'kakitas'
-            ],
-            verbs: ['list', 'watch'],
-          }
-        ]
-      }
     },
     kubePrometheus+: {
       namespace+: {
@@ -193,9 +181,71 @@ local kp =
               }
           }]
         }
+      },
+    },
+    nodeExporter+: {
+      daemonset+: {
+        spec+: {
+          template+: {
+            spec+: {
+              containers: [
+                if x.name == "node-exporter"
+                then x { 
+                  args+: [
+                    # Reduce cardinality
+                    "--no-collector.arp",
+                    "--no-collector.ipvs",
+                    "--no-collector.sockstat",
+                    "--no-collector.softnet",
+                    "--collector.filesystem.fs-types-exclude=^(autofs|binfmt_misc|bpf|cgroup2?|configfs|debugfs|devpts|devtmpfs|fusectl|hugetlbfs|iso9660|mqueue|nsfs|overlay|proc|procfs|pstore|rpc_pipefs|securityfs|selinuxfs|squashfs|sysfs|tracefs)$"
+                  ] 
+                }
+                else x
+                for x in super.containers
+              ]
+            }
+          },
+        },
+      },
+      serviceMonitor+: {
+        spec+: {
+          endpoints: [
+            if x.port == "https"
+            then x { metricRelabelings+: [
+              {
+                sourceLabels: ["__name__"],
+                action: "drop",
+                regex: "node_(nf_conntrack_stat|netstat_.*6|timex_pps|network_carrie|network_iface|scrape).*",
+              },
+            ] 
+            }
+            else x
+            for x in super.endpoints
+          ]
+        }
       }
-    }
-  };
+    },
+    kubernetesControlPlane+: {
+      serviceMonitorApiserver+: {
+        spec+: {
+          endpoints: [
+            if x.port == "https"
+            then x { metricRelabelings+: [
+              {
+                sourceLabels: ["__name__"],
+                action: "drop",
+                regex: "(etcd_request_duration_seconds_bucke|apiserver_request_sli_duration_seconds_bucket
+|apiserver_request_slo_duration_seconds_bucket|apiserver_request_duration_seconds_bucket)",
+              },
+            ] 
+            }
+            else x
+            for x in super.endpoints
+          ]
+        }
+      }
+    },
+};
 
 # Do not install prometheus rules
 { 'setup/0namespace-namespace': kp.kubePrometheus.namespace } +

@@ -3,18 +3,18 @@ kind: Prometheus
 metadata:
   labels:
     app.kubernetes.io/component: prometheus
-    app.kubernetes.io/instance: k8s
+    app.kubernetes.io/instance: prometheus-peer
     app.kubernetes.io/name: prometheus
     app.kubernetes.io/part-of: kube-prometheus
     app.kubernetes.io/version: 2.41.0
-  name: k8s
+  name: prometheus-peer
   namespace: observability-peer
 spec:
   additionalAlertRelabelConfigs:
-    key: additional-relabel-configs-secret.yaml
+    key: additional-relabel-configs.yaml
     name: additional-relabel-configs
   additionalScrapeConfigs:
-    key: additional-scrape-configs-secret.yaml
+    key: additional-scrape-configs.yaml
     name: additional-scrape-configs
   affinity:
     podAntiAffinity:
@@ -23,7 +23,7 @@ spec:
           labelSelector:
             matchLabels:
               app.kubernetes.io/component: prometheus
-              app.kubernetes.io/instance: k8s
+              app.kubernetes.io/instance: prometheus-peer
               app.kubernetes.io/name: prometheus
               app.kubernetes.io/part-of: kube-prometheus
           namespaces:
@@ -48,7 +48,7 @@ spec:
   podMetadata:
     labels:
       app.kubernetes.io/component: prometheus
-      app.kubernetes.io/instance: k8s
+      app.kubernetes.io/instance: prometheus-peer
       app.kubernetes.io/name: prometheus
       app.kubernetes.io/part-of: kube-prometheus
       app.kubernetes.io/version: 2.41.0
@@ -59,12 +59,20 @@ spec:
   remoteWrite:
   - headers:
       X-Scope-OrgID: ${ENVIRONMENT}-${CLUSTER}
+    queueConfig:
+      maxSamplesPerSend: 10000
+    sendExemplars: true
     url: ${OBSERVER_URL}/api/v1/push
+    writeRelabelConfigs:
+    - regex: (.*)
+      sourceLabels:
+      - __name__
+      targetLabel: __name__
   replicas: 2
   resources:
     requests:
       memory: 100Mi
-  retention: 4h
+  retention: 4d
   ruleNamespaceSelector: {}
   ruleSelector:
     matchLabels:
@@ -73,7 +81,7 @@ spec:
     fsGroup: 2000
     runAsNonRoot: true
     runAsUser: 1000
-  serviceAccountName: prometheus-k8s
+  serviceAccountName: prometheus-prometheus-peer
   serviceMonitorNamespaceSelector: {}
   serviceMonitorSelector: {}
   storage:

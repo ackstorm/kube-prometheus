@@ -7,15 +7,27 @@ local kp =
     values+:: {
       common+: {
         namespace: 'observability-peer',
-        name: 'peer',
-        platform: 'gke'
+        platform: 'gke',
       },
       prometheus+: {
+        name: 'prometheus-peer',
         resources: {
           requests: { memory: '100Mi' },
         },
         enableFeatures: ["memory-snapshot-on-shutdown", "remote-write-receiver", "exemplar-storage"],
         # remote-write-received: allow opentelemetry to push metrics
+      },
+      nodeExporter+: {
+        resources+: {
+          requests: { cpu: '50m' },
+        },
+      },
+      blackboxExporter+: {
+      },
+      kubernetesControlPlane+: {
+      },
+      prometheusOperator+: {
+        name: "prometheus-operator-peer"
       },
     },
     priorityClass: {
@@ -23,7 +35,7 @@ local kp =
         apiVersion: 'v1',
         kind: 'ResourceQuota',
         metadata: {
-          name: 'observability',
+          name: 'observability-peer',
           namespace: 'observability-peer',
         },
         spec: {
@@ -82,14 +94,25 @@ local kp =
             spec+: {
               containers: [
                 if x.name == "kube-state-metrics"
-                then x { args+: [
-                  "--metric-labels-allowlist=nodes=[node_pool,eks_amazonaws_com_nodegroup]" # Extract nodegroup labels from node
+                then x { 
+                  args+: [
+                    "--metric-labels-allowlist=nodes=[node_pool,eks_amazonaws_com_nodegroup]", # Extract nodegroup labels from node
+                    "--resources=certificatesigningrequests,configmaps,cronjobs,daemonsets,deployments,endpoints,horizontalpodautoscalers,ingresses,jobs,leases,limitranges,mutatingwebhookconfigurations,namespaces,networkpolicies,nodes,persistentvolumeclaims,persistentvolumes,poddisruptionbudgets,pods,replicasets,replicationcontrollers,resourcequotas,secrets,services,statefulsets,storageclasses,validatingwebhookconfigurations,verticalpodautoscalers,volumeattachments" # add vpa
                   ] 
                 }
                 else x
                 for x in super.containers
               ]
             }
+          }
+        }
+      },
+    },
+    kubePrometheus+: {
+      namespace+: {
+        metadata+:{
+          labels: {
+            "goldilocks.fairwinds.com/enabled": "true" # Enable VPA recommendations
           }
         }
       }
@@ -105,7 +128,7 @@ local kp =
             }
           },
           replicas: 2,
-          retention: "4h",
+          retention: "4d", # vpa recommender is configured for 4d pod history
           tsdb: {
             outOfOrderTimeWindow: "5m"
           },
@@ -117,15 +140,24 @@ local kp =
             url: '${OBSERVER_URL}/api/v1/push',
             headers: {
               "X-Scope-OrgID": "${ENVIRONMENT}-${CLUSTER}"
-            }
+            },
+            queueConfig: {
+              maxSamplesPerSend: 10000
+            },
+            sendExemplars: true,
+            writeRelabelConfigs: [{
+              sourceLabels: ["__name__"],
+              targetLabel: "__name__",
+              regex: "(.*)"
+            }]
           }],
           additionalScrapeConfigs: {
             name: "additional-scrape-configs",
-            key: "additional-scrape-configs-secret.yaml",
+            key: "additional-scrape-configs.yaml",
           },
           additionalAlertRelabelConfigs: {
             name: "additional-relabel-configs",
-            key: "additional-relabel-configs-secret.yaml",
+            key: "additional-relabel-configs.yaml",
           },
           storage: {
             volumeClaimTemplate: {
@@ -149,9 +181,71 @@ local kp =
               }
           }]
         }
+      },
+    },
+    nodeExporter+: {
+      daemonset+: {
+        spec+: {
+          template+: {
+            spec+: {
+              containers: [
+                if x.name == "node-exporter"
+                then x { 
+                  args+: [
+                    # Reduce cardinality
+                    "--no-collector.arp",
+                    "--no-collector.ipvs",
+                    "--no-collector.sockstat",
+                    "--no-collector.softnet",
+                    "--collector.filesystem.fs-types-exclude=^(autofs|binfmt_misc|bpf|cgroup2?|configfs|debugfs|devpts|devtmpfs|fusectl|hugetlbfs|iso9660|mqueue|nsfs|overlay|proc|procfs|pstore|rpc_pipefs|securityfs|selinuxfs|squashfs|sysfs|tracefs)$"
+                  ] 
+                }
+                else x
+                for x in super.containers
+              ]
+            }
+          },
+        },
+      },
+      serviceMonitor+: {
+        spec+: {
+          endpoints: [
+            if x.port == "https"
+            then x { metricRelabelings+: [
+              {
+                sourceLabels: ["__name__"],
+                action: "drop",
+                regex: "node_(nf_conntrack_stat|netstat_.*6|timex_pps|network_carrie|network_iface|scrape).*",
+              },
+            ] 
+            }
+            else x
+            for x in super.endpoints
+          ]
+        }
       }
-    }
-  };
+    },
+    kubernetesControlPlane+: {
+      serviceMonitorApiserver+: {
+        spec+: {
+          endpoints: [
+            if x.port == "https"
+            then x { metricRelabelings+: [
+              {
+                sourceLabels: ["__name__"],
+                action: "drop",
+                regex: "(etcd_request_duration_seconds_bucke|apiserver_request_sli_duration_seconds_bucket
+|apiserver_request_slo_duration_seconds_bucket|apiserver_request_duration_seconds_bucket)",
+              },
+            ] 
+            }
+            else x
+            for x in super.endpoints
+          ]
+        }
+      }
+    },
+};
 
 # Do not install prometheus rules
 { 'setup/0namespace-namespace': kp.kubePrometheus.namespace } +
@@ -174,7 +268,7 @@ local kp =
 } +
 {
   ['kubernetes-' + name]: kp.kubernetesControlPlane[name]
-  for name in std.filter((function(name) name != 'prometheusRule' && name != 'prometheusRuleAwsVpcCni'), std.objectFields(kp.kubernetesControlPlane))
+  for name in std.filter((function(name) name != 'prometheusRule'), std.objectFields(kp.kubernetesControlPlane))
 } +
 {
   ['prometheus-' + name]: kp.prometheus[name]
