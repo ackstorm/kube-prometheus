@@ -7,7 +7,7 @@ local kp =
     values+:: {
       common+: {
         namespace: 'observability-peer',
-        platform: 'gke',
+        platform: 'eks',
       },
       prometheus+: {
         name: 'prometheus-peer',
@@ -123,7 +123,7 @@ local kp =
     kubePrometheus+: {
       namespace+: {
         metadata+:{
-          annotations: {
+          labels: {
             "goldilocks.fairwinds.com/enabled": "true" # Enable VPA recommendations
           }
         }

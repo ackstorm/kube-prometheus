@@ -123,7 +123,7 @@ local kp =
     kubePrometheus+: {
       namespace+: {
         metadata+:{
-          annotations: {
+          labels: {
             "goldilocks.fairwinds.com/enabled": "true" # Enable VPA recommendations
           }
         }
