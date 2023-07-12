@@ -234,8 +234,7 @@ local kp =
               {
                 sourceLabels: ["__name__"],
                 action: "drop",
-                regex: "(etcd_request_duration_seconds_bucke|apiserver_request_sli_duration_seconds_bucket
-|apiserver_request_slo_duration_seconds_bucket|apiserver_request_duration_seconds_bucket)",
+                regex: "(etcd_request_duration_seconds_buckt|apiserver_request_sli_duration_seconds_bucket|apiserver_request_slo_duration_seconds_bucket|apiserver_request_duration_seconds_bucket)",
               },
             ] 
             }
